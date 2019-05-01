@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Book
+{% endblock %}
+
+{% block main %}
+
+<ul>
+  <br><li> Title: {{ info[0][0] }} </li>
+  <br><li> Author: {{ info[0][1] }} </li>
+  <br><li> Year: {{ info[0][2] }} </li>
+  <br><li> Isbn: {{ info[0][3] }} </li>
+  <br><li> Average Rating: {{ rating }} </li>
+  <br><li> Number of Ratings: {{ amratings }}</li>
+  <br><li> Average Rating from GoodReads: {{ grdata["average_rating"]}}</li>
+  <br><li> Number of Ratings from GoodReads: {{grdata["work_ratings_count"]}}</li>
+</ul>
+
+
+<h3>Rating</h3>
+<!-- Default inline 1-->
+<form id = "form" action="/review" method="post">
+<select class="form-control" name="rating">
+  <option value='0'disabled selected>Rating</option>
+  <option>1</option>
+  <option>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option>5</option>
+</select>
+
+    <br><input type="text" id="review" placeholder="Review"><br>
+    <br><button name="submitbutton" id ="btn" value="{{ info[0][3] }}"class="btn btn-primary" type="submit">Submit Review</button><br>
+</form>
+
+<br><table class="table table-sm table-dark" id="reviewtable">
+<thead>
+  <tr>
+    <th scope="col">Rating</th>
+    <th scope="col">Review</th>
+  </tr>
+</thead>
+<tbody>
+{% for review in reviews %}
+<tr class="table-row">
+  <td>{{ review["rating"] }}</td>
+  <td>{{ review["review"] }}</td>
+</tr>
+{% endfor %}
+</tbody>
+{% endblock %}

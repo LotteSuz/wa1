@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block main %}
+<br><input type="text" id="query" onkeyup="Search()" placeholder="Search"><br>
+
+
+  <table class="table table-sm table-striped" id="booktable">
+  <thead>
+    <tr>
+      <th scope="col">ISBN</th>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Year</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for book in books %}
+    <tr class="table-row" data-href="/book/{{ book['isbn'] }}" >
+      <td>{{ book["isbn"] }}</td>
+      <td>{{ book["title"] }}</td>
+      <td>{{ book["author"] }}</td>
+      <td>{{ book["year"] }}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function($) {
+    $(".table-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+  });
+
+  function Search() {
+    // Declare variables
+    console.log("search")
+    var input = document.getElementById('query');
+    var filter = input.value.toUpperCase();
+    var tr = document.getElementsByTagName("tr");
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      for (j=0; j < 3; j++) {
+        var a = tr[i].getElementsByTagName("td")[j];
+        if (a) {
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+            break;
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  }
+</script>
+
+{% endblock %}
